@@ -1,11 +1,8 @@
 <template>
 	<div class="wrapper pl-2 pr-2">
-		<div class="row mt-3 mb-3">
-			<div class="col-6 text-center">
-				Day {{ day }}
-			</div>
-			<div class="col-6 text-center">
-				Total: {{ getTotal }}
+		<div class="row mt-3">
+			<div class="col-12 text-center">
+				<button class="play-button w-100" @click="doAnimation" v-html="playButton"></button>
 			</div>
 		</div>
 		<div class="lines-wrapper border mt-3 mb-3">
@@ -21,9 +18,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-12 text-center">
-				<button class="play-button w-100" @click="doAnimation" v-html="playButton"></button>
+		<div class="row mt-3 mb-3">
+			<div class="col-6 text-center">
+				Day {{ day }}
+			</div>
+			<div class="col-6 text-center">
+				Total: {{ getTotal }}
 			</div>
 		</div>
 	</div>
