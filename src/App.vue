@@ -1,36 +1,37 @@
 <template>
-	<div class="wrapper">
-		<div class="row mt-3">
-			<div class="col-3 text-center">
-				<button @click="doAnimation">{{ play ? 'Stop' : 'Start' }}</button>
-			</div>
+	<div class="wrapper pl-2 pr-2">
+		<div class="row mt-3 mb-3">
 			<div class="col-6 text-center">
 				Day {{ day }}
 			</div>
-			<div class="col-3 text-center">
+			<div class="col-6 text-center">
 				Total: {{ getTotal }}
 			</div>
 		</div>
-		<div class="lines-wrapper">
-			<div v-for="country in getCountries" :key="country.name" class="mb-2">
-				
-				<div v-if="country.start < day" :class="getClass(country.current)">
-					<div class="text-right col-3">
-						<small>{{ country.name }}</small>
-					</div>
-					<div class="text-right col-6 pl-0 pr-0 border-left">
-						<div class="bg-primary line h-100" :style="getWidth(country.current)"></div>
-					</div>
-					<div class="col-3">
-						<small>{{ formatNumber(country.current) }}</small>
-					</div>
+		<div class="lines-wrapper border mt-3 mb-3">
+			<div v-for="country in getCountries" :key="country.name" :class="getClass(country.current)">
+				<div class="text-right col-4 col-sm-3 pl-0 pr-0">
+					<small>{{ country.name }}</small>
 				</div>
+				<div class="text-right col-5 col-sm-6 pl-2 pr-2">
+					<div class="bg-primary line h-100" :style="getWidth(country.current)"></div>
+				</div>
+				<div class="col-3 pl-0 pr-0">
+					<small>{{ formatNumber(country.current) }}</small>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 text-center">
+				<button class="play-button w-100" @click="doAnimation" v-html="playButton"></button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+
+import CountryList from '@/country-list';
 
 export default {
 	name: "app",
@@ -39,86 +40,7 @@ export default {
 			day: 0,
 			end: 100,
 			play: false,
-			countries: [
-				{
-					name: 'US',
-					start: 80,
-					end: 100,
-					total: 530830
-				},
-				{
-					name: 'UK',
-					start: 80,
-					end: 100,
-					total: 85173
-				},
-				{
-					name: 'Italy',
-					start: 60,
-					end: 100,
-					total: 152271
-				},
-				{
-					name: 'Spain',
-					start: 60,
-					end: 100,
-					total: 166019
-				},
-				{
-					name: 'China',
-					start: 1,
-					end: 60,
-					total: 83134
-				},
-				{
-					name: 'France',
-					start: 70,
-					end: 100,
-					total: 130730
-				},
-				{
-					name: 'Germany',
-					start: 75,
-					end: 100,
-					total: 125834
-				},
-				{
-					name: 'Iran',
-					start: 60,
-					end: 100,
-					total: 71686
-				},
-				{
-					name: 'Turkey',
-					start: 80,
-					end: 100,
-					total: 52167
-				},
-				{
-					name: 'Belgium',
-					start: 75,
-					end: 100,
-					total: 29647
-				},
-				{
-					name: 'Netherlands',
-					start: 75,
-					end: 100,
-					total: 25746
-				},
-				{
-					name: 'Switzerland',
-					start: 75,
-					end: 100,
-					total: 25328
-				},
-				{
-					name: 'Canada',
-					start: 85,
-					end: 100,
-					total: 23717
-				},
-			]
+			countries: CountryList
 		}
 	},
 	methods: {
@@ -176,12 +98,16 @@ export default {
 			return this.formatNumber(
 				this.getCountries.reduce((a, b) => ({current: a.current + b.current})).current
 			);
+		},
+
+		playButton () {
+			return this.play ? 'Stop <span class="far fa-stop-circle"></span>' : 'Start <span class="far fa-play-circle"></span>'
 		}
 
 	},
 	mounted () {
 
-		setInterval(() => {if(this.play) this.day++}, 500);
+		setInterval(() => {if(this.play) this.day++}, 550);
 
 	},
 	watch: {
@@ -196,30 +122,36 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-	min-width: 500px;
 	max-width: 900px;
+	margin: 0 auto;
 }
 
 .lines-wrapper {
 	position: relative;
 	overflow: hidden;
-	height: 300px;
+	height: 305px;
 }
 
 .count {
 	position: absolute;
+	top: 110%;
 	width: 100%;
-	transition: top 0.3s;
+	opacity: 0;
+	transition: top 0.5s ease-in-out, opacity 0.5s;
 }
 
 .line {
-	width: 0;
-	transition: width 0.3s;
+	transition: width 0.5s ease-in-out;
 }
 
-@for $i from 0 through 13 {
+@for $i from 0 through 9 {
 	.position-#{$i + 1} {
-		top: #{$i * 30}px;
+		top: #{($i * 30) + 5}px;
+		opacity: 1;
 	}
+}
+
+.play-button {
+	max-width: 250px;
 }
 </style>
